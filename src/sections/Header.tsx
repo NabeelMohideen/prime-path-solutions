@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
@@ -20,7 +20,22 @@ const Header = () => {
   const [isAdhocSupportDropdownOpen, setIsAdhocSupportDropdownOpen] =
     useState(false);
 
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const isActive = (path: string) => pathname === path;
+
+  const handleDropdownLeave = (setter: (value: boolean) => void) => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setter(false);
+    }, 200);
+  };
+
+  const handleDropdownEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -143,26 +158,27 @@ const Header = () => {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex gap-6 text-black/60 items-center">
               {/* Company Dropdown */}
-              <div className="relative">
+              <div
+                className="relative"
+                onMouseEnter={() => {
+                  handleDropdownEnter();
+                  setIsCompanyDropdownOpen(true);
+                }}
+                onMouseLeave={() => handleDropdownLeave(setIsCompanyDropdownOpen)}
+              >
                 <button
                   className={`flex items-center gap-1 hover:text-[#750000] transition-colors ${
                     ["/about-us", "/life-at-pps", "/careers"].includes(pathname)
                       ? "text-[#750000] font-bold"
                       : ""
                   }`}
-                  onMouseEnter={() => setIsCompanyDropdownOpen(true)}
-                  onMouseLeave={() => setIsCompanyDropdownOpen(false)}
                 >
                   Company
                   <ChevronDown className="w-4 h-4" />
                 </button>
 
                 {isCompanyDropdownOpen && (
-                  <div
-                    className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg py-2 min-w-[200px]"
-                    onMouseEnter={() => setIsCompanyDropdownOpen(true)}
-                    onMouseLeave={() => setIsCompanyDropdownOpen(false)}
-                  >
+                  <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg py-2 min-w-[200px]">
                     <a
                       href="/about-us"
                       className={`block px-4 py-2 hover:bg-gray-100 hover:text-[#750000] ${
@@ -194,7 +210,14 @@ const Header = () => {
               </div>
 
               {/* Our Services Dropdown */}
-              <div className="relative">
+              <div
+                className="relative"
+                onMouseEnter={() => {
+                  handleDropdownEnter();
+                  setIsServicesDropdownOpen(true);
+                }}
+                onMouseLeave={() => handleDropdownLeave(setIsServicesDropdownOpen)}
+              >
                 <button
                   className={`flex items-center gap-1 hover:text-[#750000] transition-colors ${
                     [
@@ -226,24 +249,21 @@ const Header = () => {
                       ? "text-[#750000] font-bold"
                       : ""
                   }`}
-                  onMouseEnter={() => setIsServicesDropdownOpen(true)}
-                  onMouseLeave={() => setIsServicesDropdownOpen(false)}
                 >
                   Our Services
                   <ChevronDown className="w-4 h-4" />
                 </button>
 
                 {isServicesDropdownOpen && (
-                  <div
-                    className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg py-2 min-w-[200px]"
-                    onMouseEnter={() => setIsServicesDropdownOpen(true)}
-                    onMouseLeave={() => setIsServicesDropdownOpen(false)}
-                  >
+                  <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg py-2 min-w-[200px]">
                     {/* Inbound Services Dropdown */}
                     <div
                       className="relative"
-                      onMouseEnter={() => setIsInboundDropdownOpen(true)}
-                      onMouseLeave={() => setIsInboundDropdownOpen(false)}
+                      onMouseEnter={() => {
+                        handleDropdownEnter();
+                        setIsInboundDropdownOpen(true);
+                      }}
+                      onMouseLeave={() => handleDropdownLeave(setIsInboundDropdownOpen)}
                     >
                       <a
                         href="/services/tele-marketing"
@@ -321,8 +341,11 @@ const Header = () => {
                     {/* Outbound Services Dropdown */}
                     <div
                       className="relative"
-                      onMouseEnter={() => setIsOutboundDropdownOpen(true)}
-                      onMouseLeave={() => setIsOutboundDropdownOpen(false)}
+                      onMouseEnter={() => {
+                        handleDropdownEnter();
+                        setIsOutboundDropdownOpen(true);
+                      }}
+                      onMouseLeave={() => handleDropdownLeave(setIsOutboundDropdownOpen)}
                     >
                       <a
                         href="/services/recovery-services"
@@ -400,8 +423,11 @@ const Header = () => {
                     {/* Social Media Services Dropdown */}
                     <div
                       className="relative"
-                      onMouseEnter={() => setIsSocialMediaDropdownOpen(true)}
-                      onMouseLeave={() => setIsSocialMediaDropdownOpen(false)}
+                      onMouseEnter={() => {
+                        handleDropdownEnter();
+                        setIsSocialMediaDropdownOpen(true);
+                      }}
+                      onMouseLeave={() => handleDropdownLeave(setIsSocialMediaDropdownOpen)}
                     >
                       <a
                         href="/services/chat-support"
@@ -446,8 +472,11 @@ const Header = () => {
                     {/* HR Outsourcing Dropdown */}
                     <div
                       className="relative"
-                      onMouseEnter={() => setIsHrOutsourcingDropdownOpen(true)}
-                      onMouseLeave={() => setIsHrOutsourcingDropdownOpen(false)}
+                      onMouseEnter={() => {
+                        handleDropdownEnter();
+                        setIsHrOutsourcingDropdownOpen(true);
+                      }}
+                      onMouseLeave={() => handleDropdownLeave(setIsHrOutsourcingDropdownOpen)}
                     >
                       <a
                         href="/services/manpower-solutions"
@@ -514,8 +543,11 @@ const Header = () => {
                     {/* Outsourcing Adhoc Support Dropdown */}
                     <div
                       className="relative"
-                      onMouseEnter={() => setIsAdhocSupportDropdownOpen(true)}
-                      onMouseLeave={() => setIsAdhocSupportDropdownOpen(false)}
+                      onMouseEnter={() => {
+                        handleDropdownEnter();
+                        setIsAdhocSupportDropdownOpen(true);
+                      }}
+                      onMouseLeave={() => handleDropdownLeave(setIsAdhocSupportDropdownOpen)}
                     >
                       <a
                         href="/services/quality-assurance"
