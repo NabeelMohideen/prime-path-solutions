@@ -146,7 +146,7 @@ export default function ContactUs() {
                 <div>
                   <h4 className="font-medium">ADDRESS:</h4>
                   <span className="text-gray-600">
-                    291-3/1 Galle Road, Mount Lavania, Colombo
+                    No. 291-3/1 Galle Road, Mount Lavania, Colombo
                   </span>
                 </div>
               </div>
