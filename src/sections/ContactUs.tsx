@@ -127,7 +127,7 @@ export default function ContactUs() {
                 <Phone className="w-6 h-6 text-[#750000] mr-4" />
                 <div>
                   <h4 className="font-medium">PHONE:</h4>
-                  <span className="text-gray-600">+94 112 718 564</span>
+                  <span className="text-gray-600">+94 11 271 5252</span>
                 </div>
               </div>
 
@@ -136,7 +136,7 @@ export default function ContactUs() {
                 <div>
                   <h4 className="font-medium">EMAIL:</h4>
                   <span className="text-gray-600">
-                    contact@primepathsolutions.com
+                    contact@primepath-solutions.com
                   </span>
                 </div>
               </div>
